@@ -17,10 +17,6 @@ struct Node {
     Node(Key key_, Data* data_)
             : key(key_), data(data_)
     { }
-
-//    ~Node() {
-//        std::cout << "~" << key  << " ";
-//    }
 };
 
 template<class Key, class Data>
