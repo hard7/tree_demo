@@ -104,6 +104,52 @@ public:
         root->is_black = true;
     }
 
+    void remove(NodeS node) {
+        bool is_black = node->is_black;
+        NodeS target;
+        if(node->left == nil) {
+            target = node->right;
+            transplant(node, target);
+        }
+        else if(node->right == nil) {
+            target = node->left;
+            transplant(node, target);
+        }
+        else {
+            target = minimum(node->right);
+            is_black = target->is_black;
+            NodeS child = target->right;
+            if(target->parent.lock() != node) {
+                transplant(target, child);
+                target->right = node->right;
+                target->right->parent = target;
+            }
+            transplant(node, target);
+            target->left = node->left;
+            target->left->parent = target;
+            target->is_black = node->is_black;
+        }
+
+        if(is_black) {
+            remove_fixup(target);
+        }
+    }
+
+    void remove_fixup(NodeS node) {
+        while(node != root and node->is_black) {
+
+        }
+
+    }
+
+    void transplant(NodeS u, NodeS v) {
+        NodeS u_parent = u->parent.lock();
+        if(u_parent == nil) root = v;
+        else if(u_parent->left == u) u_parent->left = v;
+        else u_parent->right = v;
+        v->parent = u->parent;
+    }
+
     int depth() const {
         std::queue<NodeS> queue;
         queue.push(root);
